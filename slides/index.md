@@ -1,255 +1,226 @@
-- title : React Native with F#
-- description : Introduction to React Native with F#
-- author : Steffen Forkmann
-- theme : night
+- title : F# and Fable
+- description : Re-think web development
+- author : Maxime Mangel
+- theme : solarized
 - transition : default
 
 ***
 
-## React Native with F#
+## F# and Fable
 
 <br />
-<br />
 
-### Modern mobile app development
+### Re-think web development
 
 <br />
-<br />
-Steffen Forkmann - [@sforkmann](http://www.twitter.com/sforkmann)
+Maxime Mangel - [@MangelMaxime](http://www.twitter.com/MangelMaxime)
 
 ***
 
 ### Modern mobile app development?
 
-* UI/UX
-    * "Native mobile apps"
-    * Performance
-* Tooling
-    * Hot loading
-    * IntelliSense
-* Maintainability
-    * Easy to debug
-    * Correctness
+- Fable
+- Elmish
+- Tooling
+- Elmish ecosystem
+- Html to Elmish
+- What's coming next ?
+
+***
+
+### Fable
+
+- Compiler F# to JavaScript
+- Readable output
+- Best of .Net & JavaScript
 
 ---
 
-### "Native" UI
+### Fable
 
- <img src="images/meter.png" style="background: transparent; border-style: none;"  width=300 />
+## Demo
+
+***
+
+## Elmish
 
 ---
 
-### Tooling
+## Model - View - Update
 
-<img src="images/hotloading.gif" style="background: transparent; border-style: none;"  />
+<img src="images/elmish-flow.png" style="background: white;"/>
 
-*** 
+---
 
-### Model - View - Update
+---
 
-#### "Elm - Architecture"
+## Model - View - Update
 
- <img src="images/Elm.png" style="background: white;" width=700 />
+### Model
 
+```fs
+type Model =
+    { Value : int }
 
- <small>http://danielbachler.de/2016/02/11/berlinjs-talk-about-elm.html</small>
-
-
---- 
-
-### Model - View - Update
-
-    // MODEL
-
-    type Model = int
-
-    type Msg =
+type Msg =
     | Increment
     | Decrement
 
-    let init() : Model = 0
+let init () =
+    { Value = 0 }
+```
 
 ---
 
-### Model - View - Update
+## Model - View - Update
 
-    // VIEW
+### Update
 
-    let view model dispatch =
-        div []
-            [ button [ OnClick (fun _ -> dispatch Decrement) ] [ str "-" ]
-              div [] [ str (model.ToString()) ]
-              button [ OnClick (fun _ -> dispatch Increment) ] [ str "+" ] ]
+```fs
+let update msg model =
+    match msg with
+    | Increment ->
+        { model with Value = model.Value + 1 }
 
----
-
-### Model - View - Update
-
-    // UPDATE
-
-    let update (msg:Msg) (model:Model) =
-        match msg with
-        | Increment -> model + 1
-        | Decrement -> model - 1
+    | Decrement ->
+        { model with Value = model.Value - 1 }
+```
 
 ---
 
-### Model - View - Update
+## Model - View - Update
 
-    // wiring things up
+### View
 
-    Program.mkSimple init update view
-    |> Program.withConsoleTrace
-    |> Program.withReact "elmish-app"
-    |> Program.run
+```fs
+let view model dispatch =
+    div [ ]
+        [ button [ OnClick (fun _ -> dispatch Decrement) ]
+            [ str "-" ]
+          div [ ]
+            [ str (string model.Value) ]
+          button [ OnClick (fun _ -> dispatch Increment) ]
+            [ str "+" ] ]
+```
 
 ---
 
-### Model - View - Update
+## Model - View - Update
 
-# Demo
+### Linking everything
+
+```fs
+Program.mkSimple init update view
+|> Program.withReact "elmish-app"
+|> Program.run
+```
+
+---
+
+## Model - View - Update
+
+### Demo
 
 ***
 
-### Sub-Components
+### Nested components
 
-    // MODEL
+### Model
 
-    type Model = {
-        Counters : Counter.Model list
-    }
+```fs
+type Model =
+    { Counters : Counter.Model list }
 
-    type Msg = 
-    | Insert
+type Msg =
+    | Add
     | Remove
     | Modify of int * Counter.Msg
 
-    let init() : Model =
-        { Counters = [] }
+let init () = { Counters = [] }
+```
 
 ---
 
-### Sub-Components
+## Nested components
 
-    // VIEW
+### Update (1/2)
 
-    let view model dispatch =
-        let counterDispatch i msg = dispatch (Modify (i, msg))
+```fs
+let update msg model =
+    match msg with
+    | Add ->
+        { model with Counters = Counter.init () :: model.Counters }
 
-        let counters =
-            model.Counters
-            |> List.mapi (fun i c -> Counter.view c (counterDispatch i)) 
-        
-        div [] [ 
-            yield button [ OnClick (fun _ -> dispatch Remove) ] [  str "Remove" ]
-            yield button [ OnClick (fun _ -> dispatch Insert) ] [ str "Add" ] 
-            yield! counters ]
-
----
-
-### Sub-Components
-
-    // UPDATE
-
-    let update (msg:Msg) (model:Model) =
-        match msg with
-        | Insert ->
-            { Counters = Counter.init() :: model.Counters }
-        | Remove ->
-            { Counters = 
+    | Remove ->
+        { model with
+            Counters =
                 match model.Counters with
                 | [] -> []
-                | x :: rest -> rest }
-        | Modify (id, counterMsg) ->
-            { Counters =
+                | _ :: tail -> tail }
+```
+
+---
+
+## Nested components
+
+### Update (2/2)
+
+```fs
+let update msg model =
+    match msg with
+    | Modify (counterIndex, counterMsg) ->
+        { model with
+            Counters =
                 model.Counters
-                |> List.mapi (fun i counterModel -> 
-                    if i = id then
+                |> List.mapi (fun localIndex counterModel ->
+                    if localIndex = counterIndex then
                         Counter.update counterMsg counterModel
                     else
-                        counterModel) }
+                        counterModel
+                ) }
+```
 
 ---
 
-### Sub-Components
+## Nested components
 
-# Demo
+### View
 
-***
+```fs
+let view model dispatch =
+    let counterDispatch i msg = dispatch (Modify (i, msg))
 
-### React
-
-* Facebook library for UI 
-* <code>state => view</code>
-* Virtual DOM
-
----
-
-### Virtual DOM - Initial
-
-<br />
-<br />
+    let counters =
+        model.Counters
+        |> List.mapi (fun i c -> Counter.view c (counterDispatch i))
 
 
- <img src="images/onchange_vdom_initial.svg" style="background: white;" />
-
-<br />
-<br />
-
- <small>http://teropa.info/blog/2015/03/02/change-and-its-detection-in-javascript-frameworks.html</small>
+    div [ ]
+        [ yield button [ OnClick (fun _ -> dispatch Remove) ]
+            [  str "Remove" ]
+          yield button [ OnClick (fun _ -> dispatch Add) ]
+            [ str "Add" ]
+          yield! counters ]
+```
 
 ---
 
-### Virtual DOM - Change
+## Model - View - Update
 
-<br />
-<br />
-
-
- <img src="images/onchange_vdom_change.svg" style="background: white;" />
-
-<br />
-<br />
-
- <small>http://teropa.info/blog/2015/03/02/change-and-its-detection-in-javascript-frameworks.html</small>
-
----
-
-### Virtual DOM - Reuse
-
-<br />
-<br />
-
-
- <img src="images/onchange_immutable.svg" style="background: white;" />
-
-<br />
-<br />
-
- <small>http://teropa.info/blog/2015/03/02/change-and-its-detection-in-javascript-frameworks.html</small>
-
-
-*** 
-
-### ReactNative
-
- <img src="images/ReactNative.png" style="background: white;" />
-
-
- <small>http://timbuckley.github.io/react-native-presentation</small>
+### Demo
 
 ***
 
 ### Show me the code
 
-*** 
+***
 
 ### TakeAways
 
 * Learn all the FP you can!
 * Simple modular design
 
-*** 
+***
 
 ### Thank you!
 

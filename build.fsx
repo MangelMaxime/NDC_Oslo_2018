@@ -9,10 +9,10 @@
 
 // Git configuration (used for publishing documentation in gh-pages branch)
 // The profile where the project is posted
-let gitOwner = "myGitUser"
+let gitOwner = "MangelMaxime"
 let gitHome = "https://github.com/" + gitOwner
 // The name of the project on GitHub
-let gitProjectName = "MyProject"
+let gitProjectName = "NDC_Oslo_2018"
 // The name of the GitHub repo subdirectory to publish slides to
 let gitSubDir = ""
 
@@ -39,11 +39,11 @@ Target "Clean" (fun _ ->
     CleanDirs [outDir]
 )
 
-let fsiEvaluator = 
+let fsiEvaluator =
     let evaluator = FSharp.Literate.FsiEvaluator()
-    evaluator.EvaluationFailed.Add(fun err -> 
+    evaluator.EvaluationFailed.Add(fun err ->
         traceImportant <| sprintf "Evaluating F# snippet failed:\n%s\nThe snippet evaluated:\n%s" err.StdErr err.Text )
-    evaluator 
+    evaluator
 
 let copyStylesheet() =
     try
@@ -57,15 +57,15 @@ let copyPics() =
     with
     | exn -> traceImportant <| sprintf "Could not copy picture: %s" exn.Message
 
-let generateFor (file:FileInfo) = 
+let generateFor (file:FileInfo) =
     try
         copyPics()
         let rec tryGenerate trials =
             try
                 FsReveal.GenerateFromFile(file.FullName, outDir, fsiEvaluator = fsiEvaluator)
-            with 
+            with
             | exn when trials > 0 -> tryGenerate (trials - 1)
-            | exn -> 
+            | exn ->
                 traceImportant <| sprintf "Could not generate slides for: %s" file.FullName
                 traceImportant exn.Message
 
@@ -92,7 +92,7 @@ let socketHandler (webSocket : WebSocket) =
     while true do
       let! refreshed =
         Control.Async.AwaitEvent(refreshEvent.Publish)
-        |> Suave.Sockets.SocketOp.ofAsync 
+        |> Suave.Sockets.SocketOp.ofAsync
       do! webSocket.send Text (ASCII.bytes "refreshed") true
   }
 
@@ -107,7 +107,7 @@ let startWebServer () =
 
     let port = findPort 8083
 
-    let serverConfig = 
+    let serverConfig =
         { defaultConfig with
            homeFolder = Some (FullName outDir)
            bindings = [ HttpBinding.mkSimple HTTP "127.0.0.1" port ]
@@ -131,7 +131,7 @@ Target "GenerateSlides" (fun _ ->
 
 Target "KeepRunning" (fun _ ->
     use watcher = !! (slidesDir + "/**/*.*") |> WatchChanges handleWatcherEvents
-    
+
     startWebServer ()
 
     traceImportant "Waiting for slide edits. Press any key to stop."
@@ -162,5 +162,5 @@ Target "ReleaseSlides" (fun _ ->
 
 "GenerateSlides"
   ==> "ReleaseSlides"
-  
+
 RunTargetOrDefault "KeepRunning"
