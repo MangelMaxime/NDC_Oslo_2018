@@ -17,8 +17,6 @@ Maxime Mangel - [@MangelMaxime](http://www.twitter.com/MangelMaxime)
 
 ***
 
-### Modern mobile app development?
-
 - Fable
 - Elmish
 - Tooling
@@ -38,7 +36,21 @@ Maxime Mangel - [@MangelMaxime](http://www.twitter.com/MangelMaxime)
 
 ### Fable
 
+- No typos thanks to compiler
+- Intellisense
+- Error at design time
+
+---
+
+### Fable
+
 ## Demo
+
+***
+
+## The HTML problem
+
+Demo by code
 
 ***
 
@@ -211,19 +223,122 @@ let view model dispatch =
 
 ***
 
-### Show me the code
+### Tooling
+
+---
+
+## Elmish.Debugger
+
+<img src="images/debugger_code.png" style="background: white;"/>
+
+---
+
+## Elmish.HMR
+
+<img src="images/hmr_code.png" style="background: white;"/>
 
 ***
 
-### TakeAways
+## The CSS problem
 
-* Learn all the FP you can!
-* Simple modular design
+---
+
+## Manual css with Bulma
+
+```fs
+let view model dispatch =
+    div [ Class "columns is-vcentered"
+          Style [ Width "300px" ] ]
+        [ div [ Class "column" ]
+            [ button [ Class "button"
+                        OnClick (fun _ -> dispatch Decrement) ]
+                [ str "-" ] ]
+            div [ Class "column" ]
+                [ str (string model.Value) ]
+            div [ Class "column" ]
+                [ button [ Class "button"
+                           OnClick (fun _ -> dispatch Increment) ]
+                [ str "+" ] ] ]
+```
+
+---
+
+## Strongly typed css wtih Fulma
+
+```fs
+let view model dispatch =
+    Columns.columns [ Columns.Props [ Style [ Width "300px" ] ]
+                      Column.IsVcentered ]
+        [ Column.column [ ]
+            [ Button.button [ Button.OnClick (fun _ -> dispatch Decrement) ]
+                [ str "-" ] ]
+            Column.column [ ]
+                [ str (string model.Value) ]
+            Column.column [ ]
+                [ Button.button [ Button.OnClick (fun _ -> dispatch Increment) ]
+                    [ str "+" ] ] ]
+```
+
+***
+
+## Time to code
+
+***
+
+## Thoth.Json
+
+- No need to follow the json structure
+- Decode only what's needed
+- Strongly typed
+- Easily extensible
+- Nice error message
+
+---
+
+### Thot.Json.Decode
+
+<img src="images/thot-decode.png">
+
+---
+
+### Thot.Json.Decode
+
+<img src="images/thoth_code_1.png">
+
+---
+
+### Thot.Json.Decode
+
+<img src="images/thoth_code_2.png">
+
+---
+
+#### Thot.Json generator (WIP)
+
+<img src="images/thot-generator-demo.gif">
+
+---
+
+### Thot.Json-next
+
+- Auto decoder/encoder using Reflection
+- Better errors
+<img src="images/thoth_error_next_gen.png">
+
+***
+
+## F# and Fable
+
+### Summary
+
+* No more HTML templates
+* Views are just code
+* Strongly typed CSS
+* Strongly typed components
+* Quick feedback
+* Handle every case
+* The compiler have your back
 
 ***
 
 ### Thank you!
-
-* https://github.com/fable-compiler/fable-elmish
-* https://ionide.io
-* https://facebook.github.io/react-native/
