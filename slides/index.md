@@ -36,21 +36,13 @@ Maxime Mangel - [@MangelMaxime](http://www.twitter.com/MangelMaxime)
 
 ### Fable
 
-- No typos thanks to compiler
-- Intellisense
-- Error at design time
-
----
+## Demo
 
 ### Fable
 
-## Demo
-
-***
-
-## The HTML problem
-
-Demo by code
+- Intellisense
+- Error at design time
+- Great interop
 
 ***
 
