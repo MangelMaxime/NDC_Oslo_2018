@@ -275,6 +275,12 @@ let view model dispatch =
 
 ***
 
+## React
+
+<img src="images/react_leaflet.png">
+
+***
+
 ## Time to code
 
 ***
@@ -337,7 +343,7 @@ let view model dispatch =
 - React bindings generator
 - Thot.Json generator tool
 - Fable 2
-    - Reduce application size of **40%**
+    - Reduce application size
 
 ***
 
@@ -356,3 +362,5 @@ let view model dispatch =
 ***
 
 ### Thank you!
+
+http://fable.io/fableconf
