@@ -75,6 +75,7 @@ let view model dispatch =
             Message.message [ Message.Color IsDanger ]
                 [ Message.body [ ]
                     [ str msg ] ]
+
     Columns.columns [ Columns.Props [ Style [ MinHeight "300px" ] ] ]
         [ Column.column [ ]
             [ Switch.switch [ Switch.Checked model.ShowMarker

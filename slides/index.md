@@ -21,7 +21,7 @@ Maxime Mangel - [@MangelMaxime](http://www.twitter.com/MangelMaxime)
 - Elmish
 - Tooling
 - Elmish ecosystem
-- Html to Elmish
+- Live coding
 - What's coming next ?
 
 ***
@@ -37,6 +37,8 @@ Maxime Mangel - [@MangelMaxime](http://www.twitter.com/MangelMaxime)
 ### Fable
 
 ## Demo
+
+---
 
 ### Fable
 
@@ -316,6 +318,26 @@ let view model dispatch =
 - Auto decoder/encoder using Reflection
 - Better errors
 <img src="images/thoth_error_next_gen.png">
+
+***
+
+## Look at these projects too
+
+- [SAFE stack](https://github.com/SAFE-Stack)
+- [Fulma demo](https://mangelmaxime.github.io/fulma-demo/)
+- [Fable.Remoting](https://zaid-ajaj.github.io/Fable.Remoting/)
+- [Elmish.Toastr](https://zaid-ajaj.github.io/Elmish.Toastr/)
+
+***
+
+## What's coming ?
+
+- Html to Elmish
+    - Fulma
+- React bindings generator
+- Thot.Json generator tool
+- Fable 2
+    - Reduce application size of **40%**
 
 ***
 

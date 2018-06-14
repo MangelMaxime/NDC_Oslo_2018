@@ -7,7 +7,6 @@
     <Compile Include="Demos/Counter.fs" />
     <Compile Include="Demos/CounterList.fs" />
     <Compile Include="Demos/MapDemo.fs" />
-    <Compile Include="Demos/MapDemoSoluce.fs" />
     <Compile Include="Router.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
