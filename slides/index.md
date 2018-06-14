@@ -231,6 +231,12 @@ let view model dispatch =
 
 <img src="images/hmr_code.png" style="background: white;"/>
 
+---
+
+## HTML to Elmish
+
+https://mangelmaxime.github.io/html-to-elmish/
+
 ***
 
 ## The CSS problem

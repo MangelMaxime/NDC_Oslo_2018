@@ -146,7 +146,7 @@ open Elmish.Browser.UrlParser
 
 Program.mkProgram init update view
 |> Program.toNavigable (parseHash Router.pageParser) urlUpdate
-|> Program.withHMR
+// |> Program.withHMR
 |> Program.withReactUnoptimized "elmish-app"
-|> Program.withDebugger
+// |> Program.withDebugger
 |> Program.run
