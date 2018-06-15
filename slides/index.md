@@ -17,6 +17,8 @@ Maxime Mangel - [@MangelMaxime](http://www.twitter.com/MangelMaxime)
 
 ***
 
+## Agenda
+
 - Fable
 - Elmish
 - Tooling
@@ -369,4 +371,4 @@ let view model dispatch =
 
 ### Thank you!
 
-http://fable.io/fableconf
+http://fable.io/fableconf/
